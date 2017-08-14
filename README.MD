@@ -20,6 +20,6 @@ Channels are popular in golang for sharing data. In the golang training i took, 
 | chat.html | This is the only html file that defines how the chat app looks like and has JS code to send and recieve websocket frames and display them accordingly |
 
 
-### Flow diagrams
+### Flow diagrams (made with https://www.draw.io and data in images/)
 ![Adding new User to chat room](images/add-new-user.png)
 ![Connected user message flow](images/connected-user.png)
