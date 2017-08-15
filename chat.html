@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Welcome to golang chat</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
     <style media="screen">
       .messages{
         display: block;
@@ -34,7 +35,7 @@
         <div class="row">
           <div class="col-md-6 col-md-offset-3">
             <div class="col-12">
-              <span id="connectionStatus"></span>
+              <span id="connectionStatus">Please start typing something to start the chat session</span>
               <pre id="output" class="messages"></pre>
             </div>
           </div>
@@ -65,7 +66,15 @@
     var message = document.getElementById("userMessage")
     var userName = document.getElementById("userName")
     var output = document.getElementById("output")
-    var socket = new WebSocket("ws://dev.walmart.com:9999/chat")
+    //alert("PORT ..s. "+location.hostname)
+    var hostName = location.hostname;
+    var socket;
+    if(hostName.indexOf("herokuapp") !== -1){
+      socket = new WebSocket("wss://"+hostName+"/chat")
+    }
+    else if (hostName == "dev.walmart.com" || hostName == "localhost") {
+      socket = new WebSocket("ws://dev.walmart.com:9999/chat")
+    }
 
     socket.onopen = function() {
       connectionStatus.innerHTML = "Status: Connected\n";

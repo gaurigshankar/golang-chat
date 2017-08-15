@@ -1,5 +1,5 @@
 {
   "port": 9999,
   "hostName" : "dev.walmart.com",
-  "logfilePath": "logs.txt"
+  "logfilePath": "logs.log"
 }

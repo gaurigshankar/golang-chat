@@ -2,10 +2,9 @@ package main
 
 import (
   "net/http"
-
+  "os"
   "log"
-
-  "strings"
+  "fmt"
   "strconv"
   "github.com/gaurigshankar/golang-chat/chat"
   "github.com/gaurigshankar/golang-chat/config"
@@ -16,8 +15,13 @@ var serverHostName string
 
 func init() {
   configuration = config.LoadConfigAndSetUpLogging()
-  strs := []string{configuration.Hostname, ":", strconv.Itoa(configuration.Port)}
-  serverHostName = strings.Join(strs, "")
+
+  herokuConfigPort := os.Getenv("PORT")
+  if herokuConfigPort == "" {
+		serverHostName = fmt.Sprintf("%s:%s",configuration.Hostname,strconv.Itoa(configuration.Port))
+	} else {
+    serverHostName = fmt.Sprintf(":%s",herokuConfigPort)
+  }
   log.Println("The serverHost url", serverHostName)
 
 }
