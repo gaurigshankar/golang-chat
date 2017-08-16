@@ -66,7 +66,6 @@
     var message = document.getElementById("userMessage")
     var userName = document.getElementById("userName")
     var output = document.getElementById("output")
-    //alert("PORT ..s. "+location.hostname)
     var hostName = location.hostname;
     var socket;
     if(hostName.indexOf("herokuapp") !== -1){
@@ -88,8 +87,9 @@
       var userSpanNode = document.createElement("span");
       var boldNode = document.createElement("strong");
       var messageSpanNode = document.createElement("span");
-      userSpanNode.setAttribute("class","col-2");
-      messageSpanNode.setAttribute("class", "col-10");
+      userSpanNode.setAttribute("class","col col-md-4");
+      messageSpanNode.setAttribute("class", "col col-md-8");
+      divNode.setAttribute("class", "row");
       var userTextnode = document.createTextNode(messageDetails.userName+"-"+messageDetails.timestamp+" : ");
       var messageTextnode = document.createTextNode(messageDetails.body+ "\n");
       boldNode.appendChild(userTextnode);
@@ -104,7 +104,8 @@
       if(userName.value === "") {
         userName.value = "Anonymous"
       }
-      var currenTimeStamp = new Date().toLocaleString()
+      var time = new Date();
+      var currenTimeStamp = time.toLocaleString('en-US', { hour: 'numeric',minute:'numeric', hour12: true });
       var messageDetails = {
         userName: userName.value,
         body: message.value,
