@@ -31,3 +31,6 @@ This app is deployed to Heroku and can be accessed via https://gauri-golang-chat
 ### Dependencies
 * Using https://github.com/tools/godep for managing Dependencies.
 * Whenever new Dependencies are added / used, run `godep save ./...` . This will update Godeps/Godeps.json with new dependencies and copy the dependencies to vendor directory.
+
+### Rest Services
+* Get all the current messages from `/getAllMessages`

@@ -3,6 +3,7 @@ package chat
 import (
   "log"
   "net/http"
+  "encoding/json"
   "github.com/gorilla/websocket"
 )
 
@@ -13,7 +14,7 @@ var upgrader = websocket.Upgrader{
 
 type Server struct {
   connectedUsers map[int] *User
-  messages []*Message
+  Messages []*Message `json: messages`
   addUser chan *User
   removeUser chan *User
   newIncomingMessage chan *Message
@@ -23,7 +24,7 @@ type Server struct {
 }
 
 func NewServer() *Server {
-  messages := []*Message{}
+  Messages := []*Message{}
   connectedUsers := make(map[int]*User)
   addUser := make(chan *User)
   removeUser := make(chan *User)
@@ -33,7 +34,7 @@ func NewServer() *Server {
 
   return &Server {
     connectedUsers,
-    messages,
+    Messages,
     addUser,
     removeUser,
     newIncomingMessage,
@@ -63,7 +64,7 @@ func (server *Server) Done() {
 }
 
 func (server *Server) sendPastMessages(user *User) {
-  for _, msg := range server.messages {
+  for _, msg := range server.Messages {
   //  log.Println("In sendPastMessages writing ",msg)
     user.Write(msg)
   }
@@ -84,6 +85,7 @@ func (server *Server) Listen() {
   log.Println("Server Listening .....")
 
   http.HandleFunc("/chat", server.handleChat)
+  http.HandleFunc("/getAllMessages", server.handleGetAllMessages)
 
   for {
     select {
@@ -99,7 +101,7 @@ func (server *Server) Listen() {
       delete(server.connectedUsers, user.id)
 
     case msg := <-server.newIncomingMessage:
-      server.messages = append(server.messages, msg)
+      server.Messages = append(server.Messages, msg)
       server.sendAll(msg)
     case err := <-server.errorChannel:
       log.Println("Error : ",err)
@@ -131,4 +133,11 @@ func (server *Server) handleChat(responseWriter http.ResponseWriter, request *ht
     user.Listen()
 
 
+}
+
+
+func (server *Server) handleGetAllMessages(responseWriter http.ResponseWriter, request *http.Request) {
+
+
+   json.NewEncoder(responseWriter).Encode(server)
 }
